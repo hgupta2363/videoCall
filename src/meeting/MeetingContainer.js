@@ -1,22 +1,22 @@
-import React, { useState, useEffect, useRef, createRef } from "react";
+import React, { useState, useEffect, useRef, createRef } from 'react';
 import {
   Constants,
   createCameraVideoTrack,
   useMeeting,
   usePubSub,
-} from "@videosdk.live/react-sdk";
-import { BottomBar } from "./components/BottomBar";
-import { SidebarConatiner } from "../components/sidebar/SidebarContainer";
-import MemorizedParticipantView from "./components/ParticipantView";
-import { PresenterView } from "../components/PresenterView";
-import { nameTructed, trimSnackBarText } from "../utils/helper";
-import WaitingToJoinScreen from "../components/screens/WaitingToJoinScreen";
-import ConfirmBox from "../components/ConfirmBox";
-import useIsMobile from "../hooks/useIsMobile";
-import useIsTab from "../hooks/useIsTab";
-import { useMediaQuery } from "react-responsive";
-import { toast } from "react-toastify";
-import { useMeetingAppContext } from "../MeetingAppContextDef";
+} from '@videosdk.live/react-sdk';
+import { BottomBar } from './components/BottomBar';
+import { SidebarConatiner } from '../components/sidebar/SidebarContainer';
+import MemorizedParticipantView from './components/ParticipantView';
+import { PresenterView } from '../components/PresenterView';
+import { nameTructed, trimSnackBarText } from '../utils/helper';
+import WaitingToJoinScreen from '../components/screens/WaitingToJoinScreen';
+import ConfirmBox from '../components/ConfirmBox';
+import useIsMobile from '../hooks/useIsMobile';
+import useIsTab from '../hooks/useIsTab';
+import { useMediaQuery } from 'react-responsive';
+import { toast } from 'react-toastify';
+import { useMeetingAppContext } from '../MeetingAppContextDef';
 
 export function MeetingContainer({
   onMeetingLeave,
@@ -93,18 +93,18 @@ export function MeetingContainer({
       toast(
         `${
           status === Constants.recordingEvents.RECORDING_STARTED
-            ? "Meeting recording is started"
-            : "Meeting recording is stopped."
+            ? 'Meeting recording is started'
+            : 'Meeting recording is stopped.'
         }`,
         {
-          position: "bottom-left",
+          position: 'bottom-left',
           autoClose: 4000,
           hideProgressBar: true,
           closeButton: false,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light",
+          theme: 'light',
         }
       );
     }
@@ -112,13 +112,13 @@ export function MeetingContainer({
 
   function onParticipantJoined(participant) {
     // Change quality to low, med or high based on resolution
-    participant && participant.setQuality("high");
+    participant && participant.setQuality('high');
   }
 
   function onEntryResponded(participantId, name) {
     // console.log(" onEntryResponded", participantId, name);
     if (mMeetingRef.current?.localParticipant?.id === participantId) {
-      if (name === "allowed") {
+      if (name === 'allowed') {
         setLocalParticipantAllowedJoin(true);
       } else {
         setLocalParticipantAllowedJoin(false);
@@ -140,9 +140,9 @@ export function MeetingContainer({
         setTimeout(async () => {
           const track = await createCameraVideoTrack({
             cameraId: selectedWebcam.id,
-            optimizationMode: "motion",
-            encoderConfig: "h540p_w960p",
-            facingMode: "environment",
+            optimizationMode: 'motion',
+            encoderConfig: 'h540p_w960p',
+            facingMode: 'environment',
             multiStream: false,
           });
           changeWebcam(track);
@@ -174,7 +174,7 @@ export function MeetingContainer({
     ];
 
     const isJoiningError = joiningErrCodes.findIndex((c) => c === code) !== -1;
-    const isCriticalError = `${code}`.startsWith("500");
+    const isCriticalError = `${code}`.startsWith('500');
 
     new Audio(
       isCriticalError
@@ -185,7 +185,7 @@ export function MeetingContainer({
     setMeetingErrorVisible(true);
     setMeetingError({
       code,
-      message: isJoiningError ? "Unable to join meeting!" : message,
+      message: isJoiningError ? 'Unable to join meeting!' : message,
     });
   };
 
@@ -204,7 +204,7 @@ export function MeetingContainer({
     mMeetingRef.current = mMeeting;
   }, [mMeeting]);
 
-  usePubSub("RAISE_HAND", {
+  usePubSub('RAISE_HAND', {
     onMessageReceived: (data) => {
       const localParticipantId = mMeeting?.localParticipant?.id;
 
@@ -216,22 +216,22 @@ export function MeetingContainer({
         `https://static.videosdk.live/prebuilt/notification.mp3`
       ).play();
 
-      toast(`${isLocal ? "You" : nameTructed(senderName, 15)} raised hand 🖐🏼`, {
-        position: "bottom-left",
+      toast(`${isLocal ? 'You' : nameTructed(senderName, 15)} raised hand 🖐🏼`, {
+        position: 'bottom-left',
         autoClose: 4000,
         hideProgressBar: true,
         closeButton: false,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: 'light',
       });
 
       participantRaisedHand(senderId);
     },
   });
 
-  usePubSub("CHAT", {
+  usePubSub('CHAT', {
     onMessageReceived: (data) => {
       const localParticipantId = mMeeting?.localParticipant?.id;
 
@@ -249,14 +249,14 @@ export function MeetingContainer({
             `${nameTructed(senderName, 15)} says: ${message}`
           )}`,
           {
-            position: "bottom-left",
+            position: 'bottom-left',
             autoClose: 4000,
             hideProgressBar: true,
             closeButton: false,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "light",
+            theme: 'light',
           }
         );
       }
@@ -267,9 +267,9 @@ export function MeetingContainer({
     <div
       // style={{ height: windowHeight }}
       ref={containerRef}
-      className="h-screen flex flex-col bg-gray-800"
+      className='h-screen flex flex-col bg-gray-800'
     >
-      {typeof localParticipantAllowedJoin === "boolean" ? (
+      {typeof localParticipantAllowedJoin === 'boolean' ? (
         localParticipantAllowedJoin ? (
           <>
             <div className={` flex flex-1 flex-row bg-gray-800 `}>
@@ -305,7 +305,7 @@ export function MeetingContainer({
       )}
       <ConfirmBox
         open={meetingErrorVisible}
-        successText="OKAY"
+        successText='OKAY'
         onSuccess={() => {
           setMeetingErrorVisible(false);
         }}
